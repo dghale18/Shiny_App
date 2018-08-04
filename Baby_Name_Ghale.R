@@ -11,7 +11,6 @@ library(stringr)
 
 babyname_1 <- babynames
 babyname_1$year <- as.numeric(as.character(babyname_1$year))
-babyname_1$name <- tolower(babyname_1$name)
 
 ui <- fluidPage(
   titlePanel("View baby name popularity"),
@@ -69,7 +68,7 @@ server <- function(input, output) {
     # multiple names using string_r  
     # 
     curr_names <- filter(babyname_1, 
-                         name %in% str_trim(strsplit( tolower(input$name), "," )[[1]] ),  
+                         name %in% str_trim(strsplit( input$name, "," )[[1]] ),  
                          sex == sex_str)
     
 
