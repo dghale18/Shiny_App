@@ -11,42 +11,41 @@ babyname_1$year <- as.numeric(as.character(babyname_1$year))
 babyname_1$name <- tolower(babyname_1$name)
 
 ui <- fluidPage(
-        titlePanel("View baby name popularity"),
-        sidebarLayout(
+      titlePanel("View baby name popularity"),
+      sidebarLayout(
           sidebarPanel( 
             textInput("name", 
                       "Baby name(s)",
                        ""),      
-       selectInput("sex", 
+      selectInput("sex", 
                   "Sex", 
                   list("Male", "Female", "Combined")),
-        checkboxInput("n", 
+      checkboxInput("n", 
                     "Plot number instead of proportion", 
                     FALSE),     
-        sliderInput("year", 
-                     label = "Year Range",
-                      min = min(babyname_1$year), 
-                     max = max(babyname_1$year), 
-                     value = c( min(babyname_1$year), max(babyname_1$year) 
-                    )
+      sliderInput("year", 
+                  label = "Year Range",
+                  min = min(babyname_1$year), 
+                  max = max(babyname_1$year), 
+                  value = c( min(babyname_1$year), max(babyname_1$year))
     )
 ),    
-     mainPanel(
+    mainPanel(
        plotOutput("lineplot")
     )
   )
 )
 
-server <- function(input, output){ 
-       output$lineplot <- renderPlot({
+server <-function(input, output){ 
+         output$lineplot <- renderPlot({
   # create a dataframe with new sex category "Combined" 
-       if(input$sex == "Male"){
-          sex_str = "M"
-          } else if (input$sex == "Female"){
-           sex_str = "F"
-          } else {
-           sex_str = c("M", "F")
-        }
+                if(input$sex == "Male"){
+                        sex_str = "M"
+                } else if (input$sex == "Female"){
+                         sex_str = "F"
+                } else {
+                         sex_str = c("M", "F")
+         }
     # multiple names using string_r   
     curr_names <- filter(babyname_1, name %in% str_trim(strsplit( tolower(input$name), "," )[[1]] ),  
                          sex == sex_str)
@@ -56,7 +55,7 @@ server <- function(input, output){
         group_by(name, year) %>%
         mutate(y_val = mean(prop))
       y_lab <- "Proportion of babies"
-    } else{
+    } else {
       curr_names <- curr_names %>% 
         group_by(name, year) %>%
         mutate(y_val = sum(n))
