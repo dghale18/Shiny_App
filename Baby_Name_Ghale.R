@@ -4,7 +4,7 @@ library(dplyr)
 library(babynames)
 library(stringr)
 
-# Access via https://doma-ghale.shinyapps.io/BabyNames/
+# Access via http://www.domaghale.com/intro-to-data-science/shiny-app/
 
 babyname_1 <- babynames
 babyname_1$year <- as.numeric(as.character(babyname_1$year))
